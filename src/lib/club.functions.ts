@@ -32,10 +32,9 @@ export const getPublicClub = createServerFn({ method: "GET" }).handler(async () 
   const result: Record<string, RecordRow[]> = {};
   await Promise.all(
     names.map(async (table) => {
-      const { data, error } = await client
-        .from(table === 'members' ? 'public_members' : table)
-        .select("*")
-        .order("created_at");
+      const { data, error } = table === 'members'
+        ? await client.from('public_members').select('*').order('created_at')
+        : await client.from(table).select('*').order('created_at');
       if (error) throw new Error("Unable to load club content. Please try again.");
       result[table] = await Promise.all(
         ((data ?? []) as unknown as RecordRow[]).map(async (r) => {
