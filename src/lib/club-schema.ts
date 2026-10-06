@@ -65,14 +65,14 @@ export const submissionSchema = z
         message: text.optional(),
         website: z.string().max(100).optional(),
       })
-      .superRefine((d, ctx) => {
-        for (const key of ["department", "year"] as const) {
-          if (!d[key] && !d.subject)
-            ctx.addIssue({ code: "custom", path: [key], message: "This field is required" });
-        }
-      }),
+      ,
   })
   .superRefine((v, ctx) => {
+    if (v.kind !== 'contact') {
+      for (const key of ['department', 'year'] as const) {
+        if (!v.data[key]?.trim()) ctx.addIssue({ code: 'custom', path: ['data', key], message: 'This field is required' });
+      }
+    }
     const required =
       v.kind === "contact"
         ? ["subject", "message"]

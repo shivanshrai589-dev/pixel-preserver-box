@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { LoaderCircle, ArrowRight } from "lucide-react";
@@ -12,6 +12,11 @@ export function Auth() {
   const [notice, setNotice] = useState("");
   const [forgot, setForgot] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    void supabase.auth.getUser().then(({ data }) => {
+      if (data.user) void navigate({ to: "/admin" });
+    });
+  }, [navigate]);
   async function login(e: React.FormEvent) {
     e.preventDefault();
     setNotice("");
@@ -43,9 +48,7 @@ export function Auth() {
     setNotice("");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri:
-          `window.location.origin`.replace("window.location.origin", window.location.origin) +
-          "/admin/login",
+        redirect_uri: `${window.location.origin}/admin/login`,
       });
       if (result.error) throw result.error;
       if (!result.redirected) await navigate({ to: "/admin" });

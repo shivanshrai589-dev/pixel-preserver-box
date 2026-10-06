@@ -279,9 +279,9 @@ export function CollectionPage({
                       <h3>{row.data["title"]}</h3>
                       <p>{row.data["description"]}</p>
                       {row.data["date"] && <p>{row.data["date"]}</p>}
-                      {row.data.link && (
+                      {row.data['link'] && (
                         <Button variant="link" asChild className="px-0 mt-3">
-                          <a href={row.data.link} target="_blank" rel="noopener noreferrer">
+                          <a href={row.data['link']} target="_blank" rel="noopener noreferrer">
                             Explore activity <ArrowUpRight />
                           </a>
                         </Button>

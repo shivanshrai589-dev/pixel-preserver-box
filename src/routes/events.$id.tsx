@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CalendarDays, MapPin, Clock, ArrowUpRight } from "lucide-react";
 import { clubQuery } from "@/lib/club-query";
-import { seo } from "@/lib/club-schema";
+import { seo, type RecordRow } from "@/lib/club-schema";
 import {
   PageHeading,
   ClubError,
@@ -13,7 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/events/$id")({
   head: ({ loaderData, params }) => {
-    const r = loaderData?.["events"]?.find((x) => x.id === params.id);
+    const loaded = loaderData as Record<string, RecordRow[]> | undefined;
+    const r = loaded?.["events"]?.find((x) => x.id === params.id);
     return seo(
       r?.data["title"] ?? "Event not found",
       r?.data["description"] ?? "This TechNexus event is not available.",
