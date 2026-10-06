@@ -10,33 +10,153 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ActivitiesRouteImport } from './routes/activities'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CoreTeamRouteImport } from './routes/core-team'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as JoinRouteImport } from './routes/join'
+import { Route as MembersRouteImport } from './routes/members'
+import { Route as VolunteerRouteImport } from './routes/volunteer'
+import { Route as EventsIdRouteImport } from './routes/events.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivitiesRoute = ActivitiesRouteImport.update({
+  id: '/activities',
+  path: '/activities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoreTeamRoute = CoreTeamRouteImport.update({
+  id: '/core-team',
+  path: '/core-team',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembersRoute = MembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VolunteerRoute = VolunteerRouteImport.update({
+  id: '/volunteer',
+  path: '/volunteer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsIdRoute = EventsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => EventsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/activities': typeof ActivitiesRoute
+  '/contact': typeof ContactRoute
+  '/core-team': typeof CoreTeamRoute
+  '/events': typeof EventsRouteWithChildren
+  '/join': typeof JoinRoute
+  '/members': typeof MembersRoute
+  '/volunteer': typeof VolunteerRoute
+  '/events/$id': typeof EventsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/activities': typeof ActivitiesRoute
+  '/contact': typeof ContactRoute
+  '/core-team': typeof CoreTeamRoute
+  '/events': typeof EventsRouteWithChildren
+  '/join': typeof JoinRoute
+  '/members': typeof MembersRoute
+  '/volunteer': typeof VolunteerRoute
+  '/events/$id': typeof EventsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/activities': typeof ActivitiesRoute
+  '/contact': typeof ContactRoute
+  '/core-team': typeof CoreTeamRoute
+  '/events': typeof EventsRouteWithChildren
+  '/join': typeof JoinRoute
+  '/members': typeof MembersRoute
+  '/volunteer': typeof VolunteerRoute
+  '/events/$id': typeof EventsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/activities'
+    | '/contact'
+    | '/core-team'
+    | '/events'
+    | '/join'
+    | '/members'
+    | '/volunteer'
+    | '/events/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/activities'
+    | '/contact'
+    | '/core-team'
+    | '/events'
+    | '/join'
+    | '/members'
+    | '/volunteer'
+    | '/events/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/activities'
+    | '/contact'
+    | '/core-team'
+    | '/events'
+    | '/join'
+    | '/members'
+    | '/volunteer'
+    | '/events/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  ActivitiesRoute: typeof ActivitiesRoute
+  ContactRoute: typeof ContactRoute
+  CoreTeamRoute: typeof CoreTeamRoute
+  EventsRoute: typeof EventsRouteWithChildren
+  JoinRoute: typeof JoinRoute
+  MembersRoute: typeof MembersRoute
+  VolunteerRoute: typeof VolunteerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +168,93 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activities': {
+      id: '/activities'
+      path: '/activities'
+      fullPath: '/activities'
+      preLoaderRoute: typeof ActivitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/core-team': {
+      id: '/core-team'
+      path: '/core-team'
+      fullPath: '/core-team'
+      preLoaderRoute: typeof CoreTeamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/members': {
+      id: '/members'
+      path: '/members'
+      fullPath: '/members'
+      preLoaderRoute: typeof MembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/volunteer': {
+      id: '/volunteer'
+      path: '/volunteer'
+      fullPath: '/volunteer'
+      preLoaderRoute: typeof VolunteerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events/$id': {
+      id: '/events/$id'
+      path: '/$id'
+      fullPath: '/events/$id'
+      preLoaderRoute: typeof EventsIdRouteImport
+      parentRoute: typeof EventsRoute
+    }
   }
 }
 
+interface EventsRouteChildren {
+  EventsIdRoute: typeof EventsIdRoute
+}
+
+const EventsRouteChildren: EventsRouteChildren = {
+  EventsIdRoute: EventsIdRoute,
+}
+
+const EventsRouteWithChildren =
+  EventsRoute._addFileChildren(EventsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  ActivitiesRoute: ActivitiesRoute,
+  ContactRoute: ContactRoute,
+  CoreTeamRoute: CoreTeamRoute,
+  EventsRoute: EventsRouteWithChildren,
+  JoinRoute: JoinRoute,
+  MembersRoute: MembersRoute,
+  VolunteerRoute: VolunteerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
