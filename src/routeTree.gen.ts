@@ -10,19 +10,37 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ActivitiesRouteImport } from './routes/activities'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CoreTeamRouteImport } from './routes/core-team'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as MembersRouteImport } from './routes/members'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as VolunteerRouteImport } from './routes/volunteer'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
+import { Route as AuthenticatedAdminActivitiesRouteImport } from './routes/_authenticated/admin.activities'
+import { Route as AuthenticatedAdminContactMessagesRouteImport } from './routes/_authenticated/admin.contact-messages'
+import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin.content'
+import { Route as AuthenticatedAdminCoreTeamRouteImport } from './routes/_authenticated/admin.core-team'
+import { Route as AuthenticatedAdminEventsRouteImport } from './routes/_authenticated/admin.events'
+import { Route as AuthenticatedAdminJoinApplicationsRouteImport } from './routes/_authenticated/admin.join-applications'
+import { Route as AuthenticatedAdminMembersRouteImport } from './routes/_authenticated/admin.members'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
+import { Route as AuthenticatedAdminVolunteersRouteImport } from './routes/_authenticated/admin.volunteers'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -33,6 +51,11 @@ const AboutRoute = AboutRouteImport.update({
 const ActivitiesRoute = ActivitiesRouteImport.update({
   id: '/activities',
   path: '/activities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -60,9 +83,24 @@ const MembersRoute = MembersRouteImport.update({
   path: '/members',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VolunteerRoute = VolunteerRouteImport.update({
   id: '/volunteer',
   path: '/volunteer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EventsIdRoute = EventsIdRouteImport.update({
@@ -70,43 +108,137 @@ const EventsIdRoute = EventsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => EventsRoute,
 } as any)
+const AuthenticatedAdminActivitiesRoute =
+  AuthenticatedAdminActivitiesRouteImport.update({
+    id: '/activities',
+    path: '/activities',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminContactMessagesRoute =
+  AuthenticatedAdminContactMessagesRouteImport.update({
+    id: '/contact-messages',
+    path: '/contact-messages',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminContentRoute =
+  AuthenticatedAdminContentRouteImport.update({
+    id: '/content',
+    path: '/content',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminCoreTeamRoute =
+  AuthenticatedAdminCoreTeamRouteImport.update({
+    id: '/core-team',
+    path: '/core-team',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminEventsRoute =
+  AuthenticatedAdminEventsRouteImport.update({
+    id: '/events',
+    path: '/events',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminJoinApplicationsRoute =
+  AuthenticatedAdminJoinApplicationsRouteImport.update({
+    id: '/join-applications',
+    path: '/join-applications',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMembersRoute =
+  AuthenticatedAdminMembersRouteImport.update({
+    id: '/members',
+    path: '/members',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminVolunteersRoute =
+  AuthenticatedAdminVolunteersRouteImport.update({
+    id: '/volunteers',
+    path: '/volunteers',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/activities': typeof ActivitiesRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/core-team': typeof CoreTeamRoute
   '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
+  '/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
+  '/admin/events': typeof AuthenticatedAdminEventsRoute
+  '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
+  '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/activities': typeof ActivitiesRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/core-team': typeof CoreTeamRoute
   '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/volunteer': typeof VolunteerRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
+  '/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
+  '/admin/content': typeof AuthenticatedAdminContentRoute
+  '/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
+  '/admin/events': typeof AuthenticatedAdminEventsRoute
+  '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
+  '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/activities': typeof ActivitiesRoute
+  '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/core-team': typeof CoreTeamRoute
   '/events': typeof EventsRouteWithChildren
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/volunteer': typeof VolunteerRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
+  '/_authenticated/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/_authenticated/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
+  '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
+  '/_authenticated/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
+  '/_authenticated/admin/events': typeof AuthenticatedAdminEventsRoute
+  '/_authenticated/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
+  '/_authenticated/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -114,49 +246,93 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/activities'
+    | '/auth'
     | '/contact'
     | '/core-team'
     | '/events'
     | '/join'
     | '/members'
+    | '/reset-password'
     | '/volunteer'
+    | '/admin'
+    | '/admin/login'
     | '/events/$id'
+    | '/admin/activities'
+    | '/admin/contact-messages'
+    | '/admin/content'
+    | '/admin/core-team'
+    | '/admin/events'
+    | '/admin/join-applications'
+    | '/admin/members'
+    | '/admin/settings'
+    | '/admin/volunteers'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/activities'
+    | '/auth'
     | '/contact'
     | '/core-team'
     | '/events'
     | '/join'
     | '/members'
+    | '/reset-password'
     | '/volunteer'
+    | '/admin'
+    | '/admin/login'
     | '/events/$id'
+    | '/admin/activities'
+    | '/admin/contact-messages'
+    | '/admin/content'
+    | '/admin/core-team'
+    | '/admin/events'
+    | '/admin/join-applications'
+    | '/admin/members'
+    | '/admin/settings'
+    | '/admin/volunteers'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/activities'
+    | '/auth'
     | '/contact'
     | '/core-team'
     | '/events'
     | '/join'
     | '/members'
+    | '/reset-password'
     | '/volunteer'
+    | '/_authenticated/admin'
+    | '/admin/login'
     | '/events/$id'
+    | '/_authenticated/admin/activities'
+    | '/_authenticated/admin/contact-messages'
+    | '/_authenticated/admin/content'
+    | '/_authenticated/admin/core-team'
+    | '/_authenticated/admin/events'
+    | '/_authenticated/admin/join-applications'
+    | '/_authenticated/admin/members'
+    | '/_authenticated/admin/settings'
+    | '/_authenticated/admin/volunteers'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ActivitiesRoute: typeof ActivitiesRoute
+  AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   CoreTeamRoute: typeof CoreTeamRoute
   EventsRoute: typeof EventsRouteWithChildren
   JoinRoute: typeof JoinRoute
   MembersRoute: typeof MembersRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   VolunteerRoute: typeof VolunteerRoute
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -166,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -180,6 +363,13 @@ declare module '@tanstack/react-router' {
       path: '/activities'
       fullPath: '/activities'
       preLoaderRoute: typeof ActivitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -217,11 +407,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MembersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/volunteer': {
       id: '/volunteer'
       path: '/volunteer'
       fullPath: '/volunteer'
       preLoaderRoute: typeof VolunteerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/events/$id': {
@@ -231,8 +442,111 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/_authenticated/admin/activities': {
+      id: '/_authenticated/admin/activities'
+      path: '/activities'
+      fullPath: '/admin/activities'
+      preLoaderRoute: typeof AuthenticatedAdminActivitiesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/contact-messages': {
+      id: '/_authenticated/admin/contact-messages'
+      path: '/contact-messages'
+      fullPath: '/admin/contact-messages'
+      preLoaderRoute: typeof AuthenticatedAdminContactMessagesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/content': {
+      id: '/_authenticated/admin/content'
+      path: '/content'
+      fullPath: '/admin/content'
+      preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/core-team': {
+      id: '/_authenticated/admin/core-team'
+      path: '/core-team'
+      fullPath: '/admin/core-team'
+      preLoaderRoute: typeof AuthenticatedAdminCoreTeamRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/events': {
+      id: '/_authenticated/admin/events'
+      path: '/events'
+      fullPath: '/admin/events'
+      preLoaderRoute: typeof AuthenticatedAdminEventsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/join-applications': {
+      id: '/_authenticated/admin/join-applications'
+      path: '/join-applications'
+      fullPath: '/admin/join-applications'
+      preLoaderRoute: typeof AuthenticatedAdminJoinApplicationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/members': {
+      id: '/_authenticated/admin/members'
+      path: '/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AuthenticatedAdminMembersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/volunteers': {
+      id: '/_authenticated/admin/volunteers'
+      path: '/volunteers'
+      fullPath: '/admin/volunteers'
+      preLoaderRoute: typeof AuthenticatedAdminVolunteersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
+
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminActivitiesRoute: typeof AuthenticatedAdminActivitiesRoute
+  AuthenticatedAdminContactMessagesRoute: typeof AuthenticatedAdminContactMessagesRoute
+  AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
+  AuthenticatedAdminCoreTeamRoute: typeof AuthenticatedAdminCoreTeamRoute
+  AuthenticatedAdminEventsRoute: typeof AuthenticatedAdminEventsRoute
+  AuthenticatedAdminJoinApplicationsRoute: typeof AuthenticatedAdminJoinApplicationsRoute
+  AuthenticatedAdminMembersRoute: typeof AuthenticatedAdminMembersRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminVolunteersRoute: typeof AuthenticatedAdminVolunteersRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminActivitiesRoute: AuthenticatedAdminActivitiesRoute,
+  AuthenticatedAdminContactMessagesRoute:
+    AuthenticatedAdminContactMessagesRoute,
+  AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
+  AuthenticatedAdminCoreTeamRoute: AuthenticatedAdminCoreTeamRoute,
+  AuthenticatedAdminEventsRoute: AuthenticatedAdminEventsRoute,
+  AuthenticatedAdminJoinApplicationsRoute:
+    AuthenticatedAdminJoinApplicationsRoute,
+  AuthenticatedAdminMembersRoute: AuthenticatedAdminMembersRoute,
+  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+  AuthenticatedAdminVolunteersRoute: AuthenticatedAdminVolunteersRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface EventsRouteChildren {
   EventsIdRoute: typeof EventsIdRoute
@@ -247,14 +561,18 @@ const EventsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ActivitiesRoute: ActivitiesRoute,
+  AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   CoreTeamRoute: CoreTeamRoute,
   EventsRoute: EventsRouteWithChildren,
   JoinRoute: JoinRoute,
   MembersRoute: MembersRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   VolunteerRoute: VolunteerRoute,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
