@@ -56,7 +56,7 @@ export function Admin({ table }: { table?: Table }) {
   const content = table === "club_content" || table === "site_settings";
   const rows = table
     ? (data?.[table] ?? []).filter((r) =>
-        JSON.stringify(r.data).toLowerCase().includes(search.toLowerCase()),
+        JSON.stringify(r.data).toLowerCase().replace(/\s+/g, " ").includes(search.toLowerCase().replace(/\s+/g, " ").trim()),
       )
     : [];
   async function refresh() {
