@@ -10,6 +10,7 @@ import {
   EventCard,
   SafeImage,
 } from "@/components/technexus/public-ui";
+import { safeUrl } from "@/components/technexus/public-ui";
 import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/events/$id")({
   head: ({ loaderData, params }) => {
@@ -78,9 +79,9 @@ function EventDetail() {
             <p className="prose-text">{d["description"]}</p>
             {d["organizer"] && <p className="mt-6">Organised by {d["organizer"]}</p>}
             {d["speaker"] && <p className="mt-3">Speaker: {d["speaker"]}</p>}
-            {d["registration_url"] && ["Upcoming", "Ongoing"].includes(row.status) && (
+            {safeUrl(d["registration_url"]) && ["Upcoming", "Ongoing"].includes(row.status) && (
               <Button asChild size="lg" className="mt-8">
-                <a href={d["registration_url"]} target="_blank" rel="noopener noreferrer">
+                <a href={safeUrl(d["registration_url"])} target="_blank" rel="noopener noreferrer">
                   Register for this event <ArrowUpRight />
                 </a>
               </Button>

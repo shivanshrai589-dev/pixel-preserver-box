@@ -1,3 +1,4 @@
+import { safeUrl } from "./public-ui";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
@@ -105,7 +106,7 @@ export function Footer() {
             {settings?.['email'] && <a href={`mailto:${settings['email']}`} className="block text-xs mt-3">{settings['email']}</a>}
             {settings?.['phone'] && <p>{settings['phone']}</p>}
             {settings?.['address'] && <p>{settings['address']}</p>}
-            <div className="flex gap-4 mt-4">{['linkedin','github','instagram'].map(key => settings?.[key] && <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" className="text-xs underline">{key}</a>)}</div>
+            <div className="flex gap-4 mt-4">{['linkedin','github','instagram'].map(key => safeUrl(settings?.[key]) && <a key={key} href={safeUrl(settings?.[key])} target="_blank" rel="noopener noreferrer" className="text-xs underline">{key}</a>)}</div>
           </div>
           <div className="footer-links">
             <div>

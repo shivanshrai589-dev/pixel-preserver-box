@@ -117,10 +117,10 @@ export function PersonCard({ row }: { row: RecordRow }) {
         <div className="flex gap-4 mt-3">
           {["linkedin", "github"].map(
             (k) =>
-              d[k] && (
+              safeUrl(d[k]) && (
                 <a
                   key={k}
-                  href={d[k]}
+                  href={safeUrl(d[k])}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xs underline"
@@ -197,9 +197,9 @@ export function CollectionPage({
     .filter(Boolean);
   const rows = (data[type] ?? []).filter(
     (r) =>
-      `${r.data["name"] ?? ""} ${r.data["title"] ?? ""} ${r.data["skills"] ?? ""}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      normalize(
+        `${r.data["name"] ?? ""} ${r.data["title"] ?? ""} ${r.data["position"] ?? ""} ${r.data["skills"] ?? ""} ${r.data["description"] ?? ""} ${r.data["category"] ?? ""}`,
+      ).includes(normalize(search)) &&
       (category === "All" ||
         r.data["category"] === category ||
         r.data["department"] === category) &&
@@ -281,7 +281,7 @@ export function CollectionPage({
                       {row.data["date"] && <p>{row.data["date"]}</p>}
                       {row.data['link'] && (
                         <Button variant="link" asChild className="px-0 mt-3">
-                          <a href={row.data['link']} target="_blank" rel="noopener noreferrer">
+                          <a href={safeUrl(row.data['link'])} target="_blank" rel="noopener noreferrer">
                             Explore activity <ArrowUpRight />
                           </a>
                         </Button>
@@ -296,4 +296,15 @@ export function CollectionPage({
       </section>
     </>
   );
+}
+
+export const normalize = (v: string) => v.toLowerCase().replace(/\s+/g, " ").trim();
+export function safeUrl(v?: string) {
+  if (!v) return undefined;
+  try {
+    const u = new URL(v);
+    return u.protocol === "https:" ? u.toString() : undefined;
+  } catch {
+    return undefined;
+  }
 }
