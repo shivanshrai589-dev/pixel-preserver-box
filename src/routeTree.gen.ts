@@ -20,6 +20,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as MembersRouteImport } from './routes/members'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as VolunteerRouteImport } from './routes/volunteer'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -86,6 +87,11 @@ const MembersRoute = MembersRouteImport.update({
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const VolunteerRoute = VolunteerRouteImport.update({
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/join': typeof JoinRoute
   '/members': typeof MembersRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/members'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/volunteer'
     | '/admin'
     | '/admin/login'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/members'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/volunteer'
     | '/admin'
     | '/admin/login'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/join'
     | '/members'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/volunteer'
     | '/_authenticated/admin'
     | '/admin/login'
@@ -331,6 +343,7 @@ export interface RootRouteChildren {
   JoinRoute: typeof JoinRoute
   MembersRoute: typeof MembersRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VolunteerRoute: typeof VolunteerRoute
   AdminLoginRoute: typeof AdminLoginRoute
 }
@@ -412,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/volunteer': {
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   JoinRoute: JoinRoute,
   MembersRoute: MembersRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   VolunteerRoute: VolunteerRoute,
   AdminLoginRoute: AdminLoginRoute,
 }
