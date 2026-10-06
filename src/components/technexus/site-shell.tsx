@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/technexus-logo.png.asset.json";
+import { useQuery } from "@tanstack/react-query";
+import { clubQuery } from "@/lib/club-query";
+import { supabase } from "@/integrations/supabase/client";
 const nav = [
   ["/", "Home"],
   ["/about", "About"],
@@ -27,8 +30,12 @@ export function Brand() {
 }
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
   useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    void supabase.auth.getUser().then(({ data }) => setSignedIn(!!data.user));
+  }, [path]);
   useEffect(() => {
     const close = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -46,6 +53,7 @@ export function Header() {
               {name}
             </Link>
           ))}
+          {signedIn && <Link to="/admin" className="nav-link">My account</Link>}
         </nav>
         <Button asChild className="header-cta" size="sm">
           <Link to="/join">
@@ -80,6 +88,9 @@ export function Header() {
   );
 }
 export function Footer() {
+  const { data } = useQuery(clubQuery);
+  const content = data?.['club_content']?.[0]?.data;
+  const settings = data?.['site_settings']?.[0]?.data;
   return (
     <footer className="site-footer">
       <div className="container-wide">
@@ -87,9 +98,12 @@ export function Footer() {
           <div className="footer-about">
             <Brand />
             <p>
-              A student-driven technical community at Chandigarh University. Learn together. Build
-              together. Go further.
+              {content?.['footer'] ?? 'A student-driven technical community at Chandigarh University. Learn together. Build together. Go further.'}
             </p>
+            {settings?.['email'] && <a href={`mailto:${settings['email']}`} className="block text-xs mt-3">{settings['email']}</a>}
+            {settings?.['phone'] && <p>{settings['phone']}</p>}
+            {settings?.['address'] && <p>{settings['address']}</p>}
+            <div className="flex gap-4 mt-4">{['linkedin','github','instagram'].map(key => settings?.[key] && <a key={key} href={settings[key]} target="_blank" rel="noopener noreferrer" className="text-xs underline">{key}</a>)}</div>
           </div>
           <div className="footer-links">
             <div>

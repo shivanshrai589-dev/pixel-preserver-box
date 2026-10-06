@@ -33,7 +33,7 @@ export const getPublicClub = createServerFn({ method: "GET" }).handler(async () 
   await Promise.all(
     names.map(async (table) => {
       const { data, error } = await client
-        .from(table)
+        .from(table === 'members' ? 'public_members' : table)
         .select("id,data,status,created_at")
         .order("created_at");
       if (error) throw new Error("Unable to load club content. Please try again.");
@@ -48,7 +48,7 @@ export const getPublicClub = createServerFn({ method: "GET" }).handler(async () 
               .createSignedUrl(safe["image"].slice(12), 3600);
             safe["image"] = signed?.signedUrl ?? "";
           }
-          return { ...r, data: safe };
+          return { id: r.id ?? '', status: r.status ?? 'Active', created_at: r.created_at ?? '', data: safe };
         }),
       );
     }),
