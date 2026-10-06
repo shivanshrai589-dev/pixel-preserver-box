@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791262018765,
+      "tag": "0000_technexus_community",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791262328226,
+      "tag": "0001_protect_member_contact_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791262542431,
+      "tag": "0002_limit_images_to_published_content",
+      "breakpoints": true
+    }
+  ]
+}
