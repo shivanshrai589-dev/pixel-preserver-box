@@ -34,11 +34,11 @@ export const getPublicClub = createServerFn({ method: "GET" }).handler(async () 
     names.map(async (table) => {
       const { data, error } = await client
         .from(table === 'members' ? 'public_members' : table)
-        .select("id,data,status,created_at")
+        .select("*")
         .order("created_at");
       if (error) throw new Error("Unable to load club content. Please try again.");
       result[table] = await Promise.all(
-        (data ?? []).map(async (r) => {
+        ((data ?? []) as unknown as RecordRow[]).map(async (r) => {
           const d = r.data as Record<string, string>;
           const safe = { ...d };
           if (table === "members" && safe["show_email"] !== "true") delete safe["email"];
