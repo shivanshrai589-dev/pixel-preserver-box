@@ -98,14 +98,23 @@ export const saveRecord = createServerFn({ method: "POST" })
     }
     const isContent = ["club_content", "site_settings"].includes(data.table);
     const isInbox = data.table.endsWith("applications") || data.table === "contact_messages";
-    if (!isContent && !isInbox && !data.data["name"] && !data.data["title"])
-      throw new Error("A name or title is required");
+    const titleKey = ["members", "core_members"].includes(data.table) ? "name" : "title";
+    if (!isContent && !isInbox && !data.data[titleKey]?.trim())
+      throw new Error(titleKey === "name" ? "A name is required" : "A title is required");
+    if (data.table === "events" && !data.data["date"]) throw new Error("An event date is required");
+    let previousImage = "";
+    if (data.id) {
+      const { data: prev } = await context.supabase.from(data.table).select("data").eq("id", data.id).maybeSingle();
+      previousImage = ((prev?.data ?? {}) as Record<string, string>)["image"] ?? "";
+    }
     const payload = { data: data.data, status: data.status };
     const q = data.id
       ? context.supabase.from(data.table).update(payload).eq("id", data.id)
       : context.supabase.from(data.table).insert(payload);
     const { error } = await q;
     if (error) throw new Error("Unable to save this record");
+    if (previousImage.startsWith("club-images/") && previousImage !== data.data["image"])
+      await context.supabase.storage.from("club-images").remove([previousImage.slice(12)]);
     return { ok: true };
   });
 export const deleteRecord = createServerFn({ method: "POST" })
@@ -117,8 +126,12 @@ export const deleteRecord = createServerFn({ method: "POST" })
       _role: "admin",
     });
     if (!allowed) throw new Error("Administrator access required");
+    const { data: prev } = await context.supabase.from(data.table).select("data").eq("id", data.id).maybeSingle();
+    const image = ((prev?.data ?? {}) as Record<string, string>)["image"] ?? "";
     const { error } = await context.supabase.from(data.table).delete().eq("id", data.id);
     if (error) throw new Error("Unable to delete record");
+    if (image.startsWith("club-images/"))
+      await context.supabase.storage.from("club-images").remove([image.slice(12)]);
     return { ok: true };
   });
 export const submitApplication = createServerFn({ method: "POST" })
