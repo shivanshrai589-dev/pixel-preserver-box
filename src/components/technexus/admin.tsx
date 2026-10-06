@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Plus,
   Pencil,
@@ -51,6 +51,20 @@ export function Admin({ table }: { table?: Table }) {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
   const [search, setSearch] = useState("");
+  const [preview, setPreview] = useState("");
+  const editingImage = editing?.data["image"] ?? "";
+  useEffect(() => {
+    let live = true;
+    setPreview("");
+    if (editingImage.startsWith("club-images/"))
+      void supabase.storage
+        .from("club-images")
+        .createSignedUrl(editingImage.slice(12), 600)
+        .then(({ data }) => live && setPreview(data?.signedUrl ?? ""));
+    return () => {
+      live = false;
+    };
+  }, [editingImage]);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const inbox = table?.endsWith("applications") || table === "contact_messages";
   const content = table === "club_content" || table === "site_settings";
@@ -308,10 +322,26 @@ export function Admin({ table }: { table?: Table }) {
                         }}
                       />
                       {editing.data["image"] && (
-                        <span className="text-xs text-muted-foreground flex gap-2">
-                          <Upload className="size-3" />
-                          Image uploaded
-                        </span>
+                        <div className="flex items-center gap-3 mt-2">
+                          {preview && (
+                            <img src={preview} alt="Uploaded preview" className="size-16 rounded object-cover" />
+                          )}
+                          <span className="text-xs text-muted-foreground flex gap-2">
+                            <Upload className="size-3" />
+                            Image uploaded
+                          </span>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const { image: _removed, ...rest } = editing.data;
+                              setEditing({ ...editing, data: rest });
+                            }}
+                          >
+                            Remove image
+                          </Button>
+                        </div>
                       )}
                     </div>
                   )}
