@@ -22,16 +22,18 @@ import { Route as MembersRouteImport } from './routes/members'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as VolunteerRouteImport } from './routes/volunteer'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminActivitiesRouteImport } from './routes/_authenticated/admin.activities'
+import { Route as AuthenticatedAdminApplicationsRouteImport } from './routes/_authenticated/admin.applications'
 import { Route as AuthenticatedAdminContactMessagesRouteImport } from './routes/_authenticated/admin.contact-messages'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin.content'
 import { Route as AuthenticatedAdminCoreTeamRouteImport } from './routes/_authenticated/admin.core-team'
 import { Route as AuthenticatedAdminEventsRouteImport } from './routes/_authenticated/admin.events'
 import { Route as AuthenticatedAdminJoinApplicationsRouteImport } from './routes/_authenticated/admin.join-applications'
 import { Route as AuthenticatedAdminMembersRouteImport } from './routes/_authenticated/admin.members'
+import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin.messages'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminVolunteersRouteImport } from './routes/_authenticated/admin.volunteers'
 
@@ -99,11 +101,6 @@ const VolunteerRoute = VolunteerRouteImport.update({
   path: '/volunteer',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
@@ -114,59 +111,76 @@ const EventsIdRoute = EventsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => EventsRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminActivitiesRoute =
   AuthenticatedAdminActivitiesRouteImport.update({
-    id: '/activities',
-    path: '/activities',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/activities',
+    path: '/admin/activities',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminApplicationsRoute =
+  AuthenticatedAdminApplicationsRouteImport.update({
+    id: '/admin/applications',
+    path: '/admin/applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminContactMessagesRoute =
   AuthenticatedAdminContactMessagesRouteImport.update({
-    id: '/contact-messages',
-    path: '/contact-messages',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/contact-messages',
+    path: '/admin/contact-messages',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminContentRoute =
   AuthenticatedAdminContentRouteImport.update({
-    id: '/content',
-    path: '/content',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/content',
+    path: '/admin/content',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminCoreTeamRoute =
   AuthenticatedAdminCoreTeamRouteImport.update({
-    id: '/core-team',
-    path: '/core-team',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/core-team',
+    path: '/admin/core-team',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminEventsRoute =
   AuthenticatedAdminEventsRouteImport.update({
-    id: '/events',
-    path: '/events',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/events',
+    path: '/admin/events',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminJoinApplicationsRoute =
   AuthenticatedAdminJoinApplicationsRouteImport.update({
-    id: '/join-applications',
-    path: '/join-applications',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/join-applications',
+    path: '/admin/join-applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminMembersRoute =
   AuthenticatedAdminMembersRouteImport.update({
-    id: '/members',
-    path: '/members',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/members',
+    path: '/admin/members',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminMessagesRoute =
+  AuthenticatedAdminMessagesRouteImport.update({
+    id: '/admin/messages',
+    path: '/admin/messages',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminSettingsRoute =
   AuthenticatedAdminSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/settings',
+    path: '/admin/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminVolunteersRoute =
   AuthenticatedAdminVolunteersRouteImport.update({
-    id: '/volunteers',
-    path: '/volunteers',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/volunteers',
+    path: '/admin/volunteers',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -182,18 +196,20 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
   '/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
   '/admin/events': typeof AuthenticatedAdminEventsRoute
   '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -208,18 +224,20 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
   '/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
   '/admin/events': typeof AuthenticatedAdminEventsRoute
   '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -236,18 +254,20 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/volunteer': typeof VolunteerRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/events/$id': typeof EventsIdRoute
   '/_authenticated/admin/activities': typeof AuthenticatedAdminActivitiesRoute
+  '/_authenticated/admin/applications': typeof AuthenticatedAdminApplicationsRoute
   '/_authenticated/admin/contact-messages': typeof AuthenticatedAdminContactMessagesRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/core-team': typeof AuthenticatedAdminCoreTeamRoute
   '/_authenticated/admin/events': typeof AuthenticatedAdminEventsRoute
   '/_authenticated/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/_authenticated/admin/members': typeof AuthenticatedAdminMembersRoute
+  '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -264,18 +284,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/volunteer'
-    | '/admin'
     | '/admin/login'
     | '/events/$id'
     | '/admin/activities'
+    | '/admin/applications'
     | '/admin/contact-messages'
     | '/admin/content'
     | '/admin/core-team'
     | '/admin/events'
     | '/admin/join-applications'
     | '/admin/members'
+    | '/admin/messages'
     | '/admin/settings'
     | '/admin/volunteers'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -290,18 +312,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/volunteer'
-    | '/admin'
     | '/admin/login'
     | '/events/$id'
     | '/admin/activities'
+    | '/admin/applications'
     | '/admin/contact-messages'
     | '/admin/content'
     | '/admin/core-team'
     | '/admin/events'
     | '/admin/join-applications'
     | '/admin/members'
+    | '/admin/messages'
     | '/admin/settings'
     | '/admin/volunteers'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -317,18 +341,20 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/sitemap.xml'
     | '/volunteer'
-    | '/_authenticated/admin'
     | '/admin/login'
     | '/events/$id'
     | '/_authenticated/admin/activities'
+    | '/_authenticated/admin/applications'
     | '/_authenticated/admin/contact-messages'
     | '/_authenticated/admin/content'
     | '/_authenticated/admin/core-team'
     | '/_authenticated/admin/events'
     | '/_authenticated/admin/join-applications'
     | '/_authenticated/admin/members'
+    | '/_authenticated/admin/messages'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/volunteers'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -441,13 +467,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VolunteerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -462,86 +481,111 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsIdRouteImport
       parentRoute: typeof EventsRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/activities': {
       id: '/_authenticated/admin/activities'
-      path: '/activities'
+      path: '/admin/activities'
       fullPath: '/admin/activities'
       preLoaderRoute: typeof AuthenticatedAdminActivitiesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/applications': {
+      id: '/_authenticated/admin/applications'
+      path: '/admin/applications'
+      fullPath: '/admin/applications'
+      preLoaderRoute: typeof AuthenticatedAdminApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/contact-messages': {
       id: '/_authenticated/admin/contact-messages'
-      path: '/contact-messages'
+      path: '/admin/contact-messages'
       fullPath: '/admin/contact-messages'
       preLoaderRoute: typeof AuthenticatedAdminContactMessagesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/content': {
       id: '/_authenticated/admin/content'
-      path: '/content'
+      path: '/admin/content'
       fullPath: '/admin/content'
       preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/core-team': {
       id: '/_authenticated/admin/core-team'
-      path: '/core-team'
+      path: '/admin/core-team'
       fullPath: '/admin/core-team'
       preLoaderRoute: typeof AuthenticatedAdminCoreTeamRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/events': {
       id: '/_authenticated/admin/events'
-      path: '/events'
+      path: '/admin/events'
       fullPath: '/admin/events'
       preLoaderRoute: typeof AuthenticatedAdminEventsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/join-applications': {
       id: '/_authenticated/admin/join-applications'
-      path: '/join-applications'
+      path: '/admin/join-applications'
       fullPath: '/admin/join-applications'
       preLoaderRoute: typeof AuthenticatedAdminJoinApplicationsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/members': {
       id: '/_authenticated/admin/members'
-      path: '/members'
+      path: '/admin/members'
       fullPath: '/admin/members'
       preLoaderRoute: typeof AuthenticatedAdminMembersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/messages': {
+      id: '/_authenticated/admin/messages'
+      path: '/admin/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
-      path: '/settings'
+      path: '/admin/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/volunteers': {
       id: '/_authenticated/admin/volunteers'
-      path: '/volunteers'
+      path: '/admin/volunteers'
       fullPath: '/admin/volunteers'
       preLoaderRoute: typeof AuthenticatedAdminVolunteersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminActivitiesRoute: typeof AuthenticatedAdminActivitiesRoute
+  AuthenticatedAdminApplicationsRoute: typeof AuthenticatedAdminApplicationsRoute
   AuthenticatedAdminContactMessagesRoute: typeof AuthenticatedAdminContactMessagesRoute
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminCoreTeamRoute: typeof AuthenticatedAdminCoreTeamRoute
   AuthenticatedAdminEventsRoute: typeof AuthenticatedAdminEventsRoute
   AuthenticatedAdminJoinApplicationsRoute: typeof AuthenticatedAdminJoinApplicationsRoute
   AuthenticatedAdminMembersRoute: typeof AuthenticatedAdminMembersRoute
+  AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminVolunteersRoute: typeof AuthenticatedAdminVolunteersRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminActivitiesRoute: AuthenticatedAdminActivitiesRoute,
+  AuthenticatedAdminApplicationsRoute: AuthenticatedAdminApplicationsRoute,
   AuthenticatedAdminContactMessagesRoute:
     AuthenticatedAdminContactMessagesRoute,
   AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
@@ -550,19 +594,10 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminJoinApplicationsRoute:
     AuthenticatedAdminJoinApplicationsRoute,
   AuthenticatedAdminMembersRoute: AuthenticatedAdminMembersRoute,
+  AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminVolunteersRoute: AuthenticatedAdminVolunteersRoute,
-}
-
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
