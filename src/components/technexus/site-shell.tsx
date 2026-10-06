@@ -89,8 +89,10 @@ export function Header() {
 }
 export function Footer() {
   const { data } = useQuery(clubQuery);
-  const content = data?.['club_content']?.[0]?.data;
-  const settings = data?.['site_settings']?.[0]?.data;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const content = mounted ? data?.['club_content']?.[0]?.data : undefined;
+  const settings = mounted ? data?.['site_settings']?.[0]?.data : undefined;
   return (
     <footer className="site-footer">
       <div className="container-wide">
