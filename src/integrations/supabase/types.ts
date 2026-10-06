@@ -250,7 +250,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_members: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: string | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data?: never
+          id?: string | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data?: never
+          id?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       consume_submission_limit: {
