@@ -1,0 +1,31 @@
+CREATE TYPE public.app_role AS ENUM ('admin','user');
+CREATE TABLE public.user_roles(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),user_id uuid NOT NULL,role public.app_role NOT NULL,UNIQUE(user_id,role));
+GRANT SELECT ON public.user_roles TO authenticated; GRANT ALL ON public.user_roles TO service_role;
+ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY own_roles ON public.user_roles FOR SELECT TO authenticated USING(user_id=auth.uid());
+CREATE FUNCTION public.has_role(_user_id uuid,_role public.app_role) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$SELECT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=_user_id AND role=_role)$$;
+DO $$DECLARE t text; BEGIN FOREACH t IN ARRAY ARRAY['members','core_members','activities','events','club_content','site_settings'] LOOP
+EXECUTE format('CREATE TABLE public.%I(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),data jsonb NOT NULL DEFAULT ''{}'',status text NOT NULL DEFAULT ''Active'',created_at timestamptz NOT NULL DEFAULT now())',t);
+EXECUTE format('GRANT SELECT ON public.%I TO anon',t); EXECUTE format('GRANT SELECT,INSERT,UPDATE,DELETE ON public.%I TO authenticated',t); EXECUTE format('GRANT ALL ON public.%I TO service_role',t);
+EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY',t);
+EXECUTE format('CREATE POLICY public_read ON public.%I FOR SELECT TO anon,authenticated USING(status NOT IN (''Inactive'',''Draft''))',t);
+EXECUTE format('CREATE POLICY admin_manage ON public.%I FOR ALL TO authenticated USING(public.has_role(auth.uid(),''admin'')) WITH CHECK(public.has_role(auth.uid(),''admin''))',t);
+EXECUTE format('CREATE INDEX ON public.%I(status)',t);
+END LOOP; END$$;
+DO $$DECLARE t text; BEGIN FOREACH t IN ARRAY ARRAY['volunteer_applications','join_applications','contact_messages'] LOOP
+EXECUTE format('CREATE TABLE public.%I(id uuid PRIMARY KEY DEFAULT gen_random_uuid(),data jsonb NOT NULL,email text NOT NULL CHECK(length(email)<=255),status text NOT NULL DEFAULT ''New'',created_at timestamptz NOT NULL DEFAULT now())',t);
+EXECUTE format('GRANT SELECT,INSERT,UPDATE,DELETE ON public.%I TO authenticated',t); EXECUTE format('GRANT ALL ON public.%I TO service_role',t);
+EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY',t);
+EXECUTE format('CREATE POLICY admin_manage ON public.%I FOR ALL TO authenticated USING(public.has_role(auth.uid(),''admin'')) WITH CHECK(public.has_role(auth.uid(),''admin''))',t);
+END LOOP; END$$;
+CREATE UNIQUE INDEX unique_volunteer_email ON public.volunteer_applications(email); CREATE UNIQUE INDEX unique_join_email ON public.join_applications(email);
+CREATE TABLE public.submission_limits(key text PRIMARY KEY,attempts integer NOT NULL DEFAULT 1,window_start timestamptz NOT NULL DEFAULT now());
+GRANT ALL ON public.submission_limits TO service_role;
+ALTER TABLE public.submission_limits ENABLE ROW LEVEL SECURITY;
+CREATE FUNCTION public.consume_submission_limit(input_key text) RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$DECLARE total integer; BEGIN INSERT INTO public.submission_limits(key) VALUES(input_key) ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN submission_limits.window_start<now()-interval '1 hour' THEN 1 ELSE submission_limits.attempts+1 END,window_start=CASE WHEN submission_limits.window_start<now()-interval '1 hour' THEN now() ELSE submission_limits.window_start END RETURNING attempts INTO total; RETURN total<=5; END$$;
+REVOKE ALL ON FUNCTION public.consume_submission_limit(text) FROM PUBLIC,anon,authenticated; GRANT EXECUTE ON FUNCTION public.consume_submission_limit(text) TO service_role;
+CREATE POLICY club_images_read ON storage.objects FOR SELECT TO anon,authenticated USING(bucket_id='club-images');
+CREATE POLICY club_images_admin ON storage.objects FOR ALL TO authenticated USING(bucket_id='club-images' AND public.has_role(auth.uid(),'admin')) WITH CHECK(bucket_id='club-images' AND public.has_role(auth.uid(),'admin'));
+INSERT INTO public.core_members(data) VALUES ('{"name":"Core Member","position":"Add Position","placeholder":"true"}'),('{"name":"Core Member","position":"Add Position","placeholder":"true"}'),('{"name":"Core Member","position":"Add Position","placeholder":"true"}'),('{"name":"Core Member","position":"Add Position","placeholder":"true"}');
+INSERT INTO public.club_content(data) VALUES ('{"hero_title":"Ideas are better in orbit.","hero_description":"A student-driven technical community where curious minds learn, build, collaborate and turn ideas into real-world impact.","about":"TechNexus is a student-driven technical community at Chandigarh University, Department of AIT-CSE. A place to explore technology, share ideas, and build together.","mission":"Create a welcoming space for curious minds to learn, build, and collaborate.","vision":"A community where student ideas become meaningful real-world projects.","objectives":"Encourage hands-on learning, peer collaboration, and technical exploration.","cta":"Your next idea starts here.","footer":"Curious minds. Shared ideas. A stronger community."}');
+INSERT INTO public.site_settings(data) VALUES ('{"categories":"Workshops,Hackathons,Technical Sessions,Projects,Competitions,Community,Other"}');

@@ -14,16 +14,259 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      club_content: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          data: Json
+          email: string
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email: string
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email?: string
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      core_members: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      join_applications: {
+        Row: {
+          created_at: string
+          data: Json
+          email: string
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email: string
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email?: string
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      members: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      submission_limits: {
+        Row: {
+          attempts: number
+          key: string
+          window_start: string
+        }
+        Insert: {
+          attempts?: number
+          key: string
+          window_start?: string
+        }
+        Update: {
+          attempts?: number
+          key?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_applications: {
+        Row: {
+          created_at: string
+          data: Json
+          email: string
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          email: string
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          email?: string
+          id?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      consume_submission_limit: {
+        Args: { input_key: string }
+        Returns: boolean
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +393,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
