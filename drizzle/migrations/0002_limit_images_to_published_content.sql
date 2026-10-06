@@ -1,0 +1,3 @@
+CREATE FUNCTION public.is_public_club_image(object_name text) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT EXISTS(SELECT 1 FROM (SELECT data,status FROM public.members UNION ALL SELECT data,status FROM public.core_members UNION ALL SELECT data,status FROM public.activities UNION ALL SELECT data,status FROM public.events) content WHERE status NOT IN ('Inactive','Draft') AND data->>'image'='club-images/'||object_name) $$;
+DROP POLICY club_images_read ON storage.objects;
+CREATE POLICY club_images_read ON storage.objects FOR SELECT TO anon,authenticated USING(bucket_id='club-images' AND public.is_public_club_image(name));

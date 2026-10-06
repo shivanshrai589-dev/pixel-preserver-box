@@ -284,6 +284,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_public_club_image: { Args: { object_name: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "user"
