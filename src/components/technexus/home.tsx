@@ -1,7 +1,291 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
-import { ArrowUpRight,ArrowRight,Code2,Lightbulb,BookOpen,Users,Layers,Rocket,ShieldCheck,HeartHandshake } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { clubQuery } from '@/lib/club-query'
-import { Empty,PersonCard,EventCard } from './public-ui'
-export function Home(){const{data}=useSuspenseQuery(clubQuery);const c=data['club_content']?.[0]?.data??{};const title=c['hero_title']??'Ideas are better in orbit.';return <><section className="hero"><div className="container-wide hero-inner"><div><div className="eyebrow">CHANDIGARH UNIVERSITY · DEPARTMENT OF AIT-CSE</div><h1>{title==='Ideas are better in orbit.'?<>Ideas are better<br/>in <span>orbit.</span></>:title}</h1><p className="hero-description">{c['hero_description']}</p><div className="hero-buttons"><Button size="lg" asChild><Link to="/join">Find Your People <ArrowUpRight/></Link></Button><Button size="lg" variant="secondary" asChild><Link to="/events">Explore Events <ArrowRight/></Link></Button></div><div className="hero-note"><ShieldCheck className="size-4"/>Student-driven. Curiosity-powered. Open to you.</div></div><div className="orbit-scene" aria-label="Learn, build, collaborate, and innovate together"><div className="orbit-ring"/><div className="orbit-ring two"/><div className="orbit-ring three"/><div className="orbit-ring four"/><div className="orbit-center"><Rocket strokeWidth={1.2}/></div><div className="orbit-tag tag-learn"><BookOpen/>Learn</div><div className="orbit-tag tag-build"><Code2/>Build</div><div className="orbit-tag tag-collaborate"><Users/>Collaborate</div><div className="orbit-tag tag-innovate"><Lightbulb/>Innovate</div><div className="orbit-dot"/><div className="orbit-caption">DIFFERENT MINDS. ONE ORBIT.</div></div></div></section><div className="principles"><div className="container-wide principles-inner"><span className="principles-label">A SHARED CURIOSITY. ENDLESS POSSIBILITIES.</span>{[[Code2,'Technology'],[Lightbulb,'Innovation'],[Users,'Collaboration'],[Layers,'Community']].map(([Icon,text])=>{const I=Icon as typeof Code2;return <span className="principle" key={text as string}><I/>{text as string}</span>})}</div></div><section className="section"><div className="container-wide"><div className="about-grid"><div><div className="eyebrow">OUR COMMUNITY</div><h2 className="section-title">Not just a club.<br/>A place to belong.</h2><Button asChild variant="link" className="px-0"><Link to="/about">Get to know TechNexus <ArrowUpRight/></Link></Button></div><div><p className="section-copy">{c['about']}</p><div className="about-quote">Different skills. Shared ambition.<br/>Better, together.</div></div></div><div className="stats">{[['Members',data['members']?.length??0],['Core team',data['core_members']?.filter(r=>r.data['placeholder']!=='true').length??0],['Activities',data['activities']?.length??0],['Upcoming events',data['events']?.filter(r=>r.status==='Upcoming').length??0]].map(([label,count])=><div className="stat" key={label}><strong>{count}</strong><span>{label}</span></div>)}</div></div></section><section className="section section-alt"><div className="container-wide"><div className="section-head"><div><div className="eyebrow">BEYOND THE CLASSROOM</div><h2 className="section-title">Curiosity, put into practice.</h2></div><Button variant="link" asChild><Link to="/activities">All activities <ArrowUpRight/></Link></Button></div>{data['activities']?.length?<div className="card-grid">{data['activities'].slice(0,3).map(r=><article className="content-card" key={r.id}><div className="content-card-body"><span className="tag">{r.data['category']}</span><h3>{r.data['title']}</h3><p>{r.data['description']}</p></div></article>)}</div>:<Empty type="activities"/>}</div></section><section className="section"><div className="container-wide"><div className="section-head"><div><div className="eyebrow">THE PEOPLE BEHIND IT</div><h2 className="section-title">Meet our core team.</h2></div><Button variant="link" asChild><Link to="/core-team">The whole team <ArrowUpRight/></Link></Button></div><div className="card-grid team-grid">{data['core_members']?.slice(0,4).map(r=><PersonCard row={r} key={r.id}/>)}</div></div></section><section className="section section-alt"><div className="container-wide"><div className="section-head"><div><div className="eyebrow">WHAT’S ON THE HORIZON</div><h2 className="section-title">Your next spark.</h2></div><Button variant="link" asChild><Link to="/events">All events <ArrowUpRight/></Link></Button></div>{data['events']?.some(r=>r.status==='Upcoming')?<div className="card-grid">{data['events'].filter(r=>r.status==='Upcoming').slice(0,3).map(r=><EventCard row={r} key={r.id}/>)}</div>:<Empty type="events"/>}</div></section><section className="section"><div className="container-wide"><div className="eyebrow">MAKE ROOM FOR POSSIBILITY</div><h2 className="section-title">A little curiosity goes a long way.</h2><div className="card-grid">{[[BookOpen,'Learn by doing','Explore new technologies and grow through hands-on learning.'],[Users,'Find your circle','Connect with people who share your interests and challenge your thinking.'],[Rocket,'Build something meaningful','Bring your ideas into the world, with a community beside you.']].map(([Icon,title,text])=>{const I=Icon as typeof Code2;return <article className="content-card" key={title as string}><div className="content-card-body"><I className="text-primary size-6 mb-5"/><h3>{title as string}</h3><p>{text as string}</p></div></article>})}</div><div className="mt-10 flex flex-wrap gap-5 items-center"><HeartHandshake className="text-muted-foreground"/><p className="section-copy">Help make the next experience happen.</p><Button variant="link" asChild><Link to="/volunteer">Become a volunteer <ArrowUpRight/></Link></Button></div></div></section><section className="cta-band"><div className="container-wide cta-inner"><div><div className="eyebrow mb-4">THERE’S A PLACE FOR YOU HERE</div><h2>{c['cta']??'Your next idea starts here.'}</h2><p>Bring your curiosity. We’ll bring the community.</p></div><Button size="lg" asChild><Link to="/join">Join TechNexus <ArrowUpRight/></Link></Button></div></section></>}
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import {
+  ArrowUpRight,
+  ArrowRight,
+  Code2,
+  Lightbulb,
+  BookOpen,
+  Users,
+  Layers,
+  Rocket,
+  ShieldCheck,
+  HeartHandshake,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { clubQuery } from "@/lib/club-query";
+import { Empty, PersonCard, EventCard } from "./public-ui";
+export function Home() {
+  const { data } = useSuspenseQuery(clubQuery);
+  const c = data["club_content"]?.[0]?.data ?? {};
+  const title = c["hero_title"] ?? "Ideas are better in orbit.";
+  return (
+    <>
+      <section className="hero">
+        <div className="container-wide hero-inner">
+          <div>
+            <div className="eyebrow">CHANDIGARH UNIVERSITY · DEPARTMENT OF AIT-CSE</div>
+            <h1>
+              {title === "Ideas are better in orbit." ? (
+                <>
+                  Ideas are better
+                  <br />
+                  in <span>orbit.</span>
+                </>
+              ) : (
+                title
+              )}
+            </h1>
+            <p className="hero-description">{c["hero_description"]}</p>
+            <div className="hero-buttons">
+              <Button size="lg" asChild>
+                <Link to="/join">
+                  Find Your People <ArrowUpRight />
+                </Link>
+              </Button>
+              <Button size="lg" variant="secondary" asChild>
+                <Link to="/events">
+                  Explore Events <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+            <div className="hero-note">
+              <ShieldCheck className="size-4" />
+              Student-driven. Curiosity-powered. Open to you.
+            </div>
+          </div>
+          <div
+            className="orbit-scene"
+            aria-label="Learn, build, collaborate, and innovate together"
+          >
+            <div className="orbit-ring" />
+            <div className="orbit-ring two" />
+            <div className="orbit-ring three" />
+            <div className="orbit-ring four" />
+            <div className="orbit-center">
+              <Rocket strokeWidth={1.2} />
+            </div>
+            <div className="orbit-tag tag-learn">
+              <BookOpen />
+              Learn
+            </div>
+            <div className="orbit-tag tag-build">
+              <Code2 />
+              Build
+            </div>
+            <div className="orbit-tag tag-collaborate">
+              <Users />
+              Collaborate
+            </div>
+            <div className="orbit-tag tag-innovate">
+              <Lightbulb />
+              Innovate
+            </div>
+            <div className="orbit-dot" />
+            <div className="orbit-caption">DIFFERENT MINDS. ONE ORBIT.</div>
+          </div>
+        </div>
+      </section>
+      <div className="principles">
+        <div className="container-wide principles-inner">
+          <span className="principles-label">A SHARED CURIOSITY. ENDLESS POSSIBILITIES.</span>
+          {[
+            [Code2, "Technology"],
+            [Lightbulb, "Innovation"],
+            [Users, "Collaboration"],
+            [Layers, "Community"],
+          ].map(([Icon, text]) => {
+            const I = Icon as typeof Code2;
+            return (
+              <span className="principle" key={text as string}>
+                <I />
+                {text as string}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+      <section className="section">
+        <div className="container-wide">
+          <div className="about-grid">
+            <div>
+              <div className="eyebrow">OUR COMMUNITY</div>
+              <h2 className="section-title">
+                Not just a club.
+                <br />A place to belong.
+              </h2>
+              <Button asChild variant="link" className="px-0">
+                <Link to="/about">
+                  Get to know TechNexus <ArrowUpRight />
+                </Link>
+              </Button>
+            </div>
+            <div>
+              <p className="section-copy">{c["about"]}</p>
+              <div className="about-quote">
+                Different skills. Shared ambition.
+                <br />
+                Better, together.
+              </div>
+            </div>
+          </div>
+          <div className="stats">
+            {[
+              ["Members", data["members"]?.length ?? 0],
+              [
+                "Core team",
+                data["core_members"]?.filter((r) => r.data["placeholder"] !== "true").length ?? 0,
+              ],
+              ["Activities", data["activities"]?.length ?? 0],
+              [
+                "Upcoming events",
+                data["events"]?.filter((r) => r.status === "Upcoming").length ?? 0,
+              ],
+            ].map(([label, count]) => (
+              <div className="stat" key={label}>
+                <strong>{count}</strong>
+                <span>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section section-alt">
+        <div className="container-wide">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">BEYOND THE CLASSROOM</div>
+              <h2 className="section-title">Curiosity, put into practice.</h2>
+            </div>
+            <Button variant="link" asChild>
+              <Link to="/activities">
+                All activities <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+          {data["activities"]?.length ? (
+            <div className="card-grid">
+              {data["activities"].slice(0, 3).map((r) => (
+                <article className="content-card" key={r.id}>
+                  <div className="content-card-body">
+                    <span className="tag">{r.data["category"]}</span>
+                    <h3>{r.data["title"]}</h3>
+                    <p>{r.data["description"]}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <Empty type="activities" />
+          )}
+        </div>
+      </section>
+      <section className="section">
+        <div className="container-wide">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">THE PEOPLE BEHIND IT</div>
+              <h2 className="section-title">Meet our core team.</h2>
+            </div>
+            <Button variant="link" asChild>
+              <Link to="/core-team">
+                The whole team <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+          <div className="card-grid team-grid">
+            {data["core_members"]?.slice(0, 4).map((r) => (
+              <PersonCard row={r} key={r.id} />
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section section-alt">
+        <div className="container-wide">
+          <div className="section-head">
+            <div>
+              <div className="eyebrow">WHAT’S ON THE HORIZON</div>
+              <h2 className="section-title">Your next spark.</h2>
+            </div>
+            <Button variant="link" asChild>
+              <Link to="/events">
+                All events <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+          {data["events"]?.some((r) => r.status === "Upcoming") ? (
+            <div className="card-grid">
+              {data["events"]
+                .filter((r) => r.status === "Upcoming")
+                .slice(0, 3)
+                .map((r) => (
+                  <EventCard row={r} key={r.id} />
+                ))}
+            </div>
+          ) : (
+            <Empty type="events" />
+          )}
+        </div>
+      </section>
+      <section className="section">
+        <div className="container-wide">
+          <div className="eyebrow">MAKE ROOM FOR POSSIBILITY</div>
+          <h2 className="section-title">A little curiosity goes a long way.</h2>
+          <div className="card-grid">
+            {[
+              [
+                BookOpen,
+                "Learn by doing",
+                "Explore new technologies and grow through hands-on learning.",
+              ],
+              [
+                Users,
+                "Find your circle",
+                "Connect with people who share your interests and challenge your thinking.",
+              ],
+              [
+                Rocket,
+                "Build something meaningful",
+                "Bring your ideas into the world, with a community beside you.",
+              ],
+            ].map(([Icon, title, text]) => {
+              const I = Icon as typeof Code2;
+              return (
+                <article className="content-card" key={title as string}>
+                  <div className="content-card-body">
+                    <I className="text-primary size-6 mb-5" />
+                    <h3>{title as string}</h3>
+                    <p>{text as string}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+          <div className="mt-10 flex flex-wrap gap-5 items-center">
+            <HeartHandshake className="text-muted-foreground" />
+            <p className="section-copy">Help make the next experience happen.</p>
+            <Button variant="link" asChild>
+              <Link to="/volunteer">
+                Become a volunteer <ArrowUpRight />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      <section className="cta-band">
+        <div className="container-wide cta-inner">
+          <div>
+            <div className="eyebrow mb-4">THERE’S A PLACE FOR YOU HERE</div>
+            <h2>{c["cta"] ?? "Your next idea starts here."}</h2>
+            <p>Bring your curiosity. We’ll bring the community.</p>
+          </div>
+          <Button size="lg" asChild>
+            <Link to="/join">
+              Join TechNexus <ArrowUpRight />
+            </Link>
+          </Button>
+        </div>
+      </section>
+    </>
+  );
+}

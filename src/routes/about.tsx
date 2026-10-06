@@ -1,9 +1,98 @@
-import { createFileRoute,Link } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { ArrowUpRight,BookOpen,Code2,Users,Lightbulb } from 'lucide-react'
-import { clubQuery } from '@/lib/club-query'
-import { seo } from '@/lib/club-schema'
-import { PageHeading,ClubError,Loading } from '@/components/technexus/public-ui'
-import { Button } from '@/components/ui/button'
-export const Route=createFileRoute('/about')({head:()=>seo('About','Discover TechNexus, the Chandigarh University AIT-CSE student technical community, its mission and vision.'),loader:({context})=>context.queryClient.ensureQueryData(clubQuery),component:About,errorComponent:ClubError,notFoundComponent:ClubError,pendingComponent:Loading})
-function About(){const {data}=useSuspenseQuery(clubQuery);const c=data['club_content']?.[0]?.data??{};return <><PageHeading title="Different minds. One community." description="TechNexus · Chandigarh University · Department of AIT-CSE"/><section className="section"><div className="container-wide"><div className="about-grid"><div><div className="eyebrow">WHO WE ARE</div><h2 className="section-title">A shared space for<br/>what comes next.</h2></div><p className="section-copy">{c['about']}</p></div><div className="card-grid mt-12">{['mission','vision','objectives'].map(k=><article className="content-card" key={k}><div className="content-card-body"><span className="tag">OUR {k}</span><p>{c[k]}</p></div></article>)}</div></div></section><section className="section section-alt"><div className="container-wide"><div className="eyebrow">WHAT WE DO</div><h2 className="section-title">Ideas grow when we grow together.</h2><div className="card-grid">{[[BookOpen,'Learning','Explore technology through shared knowledge and hands-on practice.'],[Code2,'Building','Turn your curiosity into projects and meaningful experiences.'],[Users,'Collaboration','Learn from different perspectives and create together.'],[Lightbulb,'Innovation','Ask new questions. Explore new possibilities.']].map(([Icon,title,text])=>{const I=Icon as typeof BookOpen;return <article className="content-card" key={title as string}><div className="content-card-body"><I className="text-primary mb-5"/><h3>{title as string}</h3><p>{text as string}</p></div></article>})}</div></div></section><section className="cta-band"><div className="container-wide cta-inner"><div><h2>{c['cta']}</h2><p>Learn, connect, and contribute to a student-driven community.</p></div><Button asChild size="lg"><Link to="/join">Join TechNexus <ArrowUpRight/></Link></Button></div></section></>}
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { ArrowUpRight, BookOpen, Code2, Users, Lightbulb } from "lucide-react";
+import { clubQuery } from "@/lib/club-query";
+import { seo } from "@/lib/club-schema";
+import { PageHeading, ClubError, Loading } from "@/components/technexus/public-ui";
+import { Button } from "@/components/ui/button";
+export const Route = createFileRoute("/about")({
+  head: () =>
+    seo(
+      "About",
+      "Discover TechNexus, the Chandigarh University AIT-CSE student technical community, its mission and vision.",
+    ),
+  loader: ({ context }) => context.queryClient.ensureQueryData(clubQuery),
+  component: About,
+  errorComponent: ClubError,
+  notFoundComponent: ClubError,
+  pendingComponent: Loading,
+});
+function About() {
+  const { data } = useSuspenseQuery(clubQuery);
+  const c = data["club_content"]?.[0]?.data ?? {};
+  return (
+    <>
+      <PageHeading
+        title="Different minds. One community."
+        description="TechNexus · Chandigarh University · Department of AIT-CSE"
+      />
+      <section className="section">
+        <div className="container-wide">
+          <div className="about-grid">
+            <div>
+              <div className="eyebrow">WHO WE ARE</div>
+              <h2 className="section-title">
+                A shared space for
+                <br />
+                what comes next.
+              </h2>
+            </div>
+            <p className="section-copy">{c["about"]}</p>
+          </div>
+          <div className="card-grid mt-12">
+            {["mission", "vision", "objectives"].map((k) => (
+              <article className="content-card" key={k}>
+                <div className="content-card-body">
+                  <span className="tag">OUR {k}</span>
+                  <p>{c[k]}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section section-alt">
+        <div className="container-wide">
+          <div className="eyebrow">WHAT WE DO</div>
+          <h2 className="section-title">Ideas grow when we grow together.</h2>
+          <div className="card-grid">
+            {[
+              [
+                BookOpen,
+                "Learning",
+                "Explore technology through shared knowledge and hands-on practice.",
+              ],
+              [Code2, "Building", "Turn your curiosity into projects and meaningful experiences."],
+              [Users, "Collaboration", "Learn from different perspectives and create together."],
+              [Lightbulb, "Innovation", "Ask new questions. Explore new possibilities."],
+            ].map(([Icon, title, text]) => {
+              const I = Icon as typeof BookOpen;
+              return (
+                <article className="content-card" key={title as string}>
+                  <div className="content-card-body">
+                    <I className="text-primary mb-5" />
+                    <h3>{title as string}</h3>
+                    <p>{text as string}</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      <section className="cta-band">
+        <div className="container-wide cta-inner">
+          <div>
+            <h2>{c["cta"]}</h2>
+            <p>Learn, connect, and contribute to a student-driven community.</p>
+          </div>
+          <Button asChild size="lg">
+            <Link to="/join">
+              Join TechNexus <ArrowUpRight />
+            </Link>
+          </Button>
+        </div>
+      </section>
+    </>
+  );
+}

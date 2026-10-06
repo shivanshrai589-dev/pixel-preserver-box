@@ -1,9 +1,118 @@
-import { Link,useRouterState } from '@tanstack/react-router'
-import { useEffect,useState } from 'react'
-import { ArrowUpRight,Menu,X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import logo from '@/assets/technexus-logo.png.asset.json'
-const nav=[['/','Home'],['/about','About'],['/activities','Activities'],['/members','Members'],['/core-team','Core Team'],['/events','Events'],['/volunteer','Volunteer']] as const
-export function Brand(){return <Link to="/" className="brand" aria-label="TechNexus home"><img src={logo.url} alt="Official TechNexus Chandigarh University AIT-CSE logo"/><div><div className="brand-name">TechNexus<span className="text-primary">.</span></div><div className="brand-sub">Chandigarh University · AIT-CSE</div></div></Link>}
-export function Header(){const [open,setOpen]=useState(false);const path=useRouterState({select:s=>s.location.pathname});useEffect(()=>setOpen(false),[path]);useEffect(()=>{const close=(e:KeyboardEvent)=>{if(e.key==='Escape')setOpen(false)};window.addEventListener('keydown',close);return()=>window.removeEventListener('keydown',close)},[]);return <header className="site-header"><div className="container-wide header-inner"><Brand/><nav className="desktop-nav" aria-label="Main navigation">{nav.map(([to,name])=><Link key={to} to={to} activeOptions={{exact:true}} className="nav-link">{name}</Link>)}</nav><Button asChild className="header-cta" size="sm"><Link to="/join">Join TechNexus <ArrowUpRight/></Link></Button><Button className="menu-toggle" variant="ghost" size="icon" aria-label={open?'Close menu':'Open menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</Button></div>{open&&<nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">{nav.map(([to,name])=><Link key={to} to={to}>{name}</Link>)}<Link to="/join">Join TechNexus <ArrowUpRight className="inline size-4"/></Link></nav>}</header>}
-export function Footer(){return <footer className="site-footer"><div className="container-wide"><div className="footer-main"><div className="footer-about"><Brand/><p>A student-driven technical community at Chandigarh University. Learn together. Build together. Go further.</p></div><div className="footer-links"><div><h3>Explore</h3><Link to="/about">About us</Link><Link to="/activities">Activities</Link><Link to="/events">Events</Link><Link to="/core-team">Core team</Link></div><div><h3>Get involved</h3><Link to="/join">Join TechNexus</Link><Link to="/volunteer">Volunteer</Link><Link to="/contact">Contact us</Link><Link to="/admin/login">Admin access</Link></div></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} TechNexus · Chandigarh University</span><span>Department of AIT-CSE · Innovate. Collaborate. Elevate.</span></div></div></footer>}
+import { Link, useRouterState } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import logo from "@/assets/technexus-logo.png.asset.json";
+const nav = [
+  ["/", "Home"],
+  ["/about", "About"],
+  ["/activities", "Activities"],
+  ["/members", "Members"],
+  ["/core-team", "Core Team"],
+  ["/events", "Events"],
+  ["/volunteer", "Volunteer"],
+] as const;
+export function Brand() {
+  return (
+    <Link to="/" className="brand" aria-label="TechNexus home">
+      <img src={logo.url} alt="Official TechNexus Chandigarh University AIT-CSE logo" />
+      <div>
+        <div className="brand-name">
+          TechNexus<span className="text-primary">.</span>
+        </div>
+        <div className="brand-sub">Chandigarh University · AIT-CSE</div>
+      </div>
+    </Link>
+  );
+}
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const path = useRouterState({ select: (s) => s.location.pathname });
+  useEffect(() => setOpen(false), [path]);
+  useEffect(() => {
+    const close = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, []);
+  return (
+    <header className="site-header">
+      <div className="container-wide header-inner">
+        <Brand />
+        <nav className="desktop-nav" aria-label="Main navigation">
+          {nav.map(([to, name]) => (
+            <Link key={to} to={to} activeOptions={{ exact: true }} className="nav-link">
+              {name}
+            </Link>
+          ))}
+        </nav>
+        <Button asChild className="header-cta" size="sm">
+          <Link to="/join">
+            Join TechNexus <ArrowUpRight />
+          </Link>
+        </Button>
+        <Button
+          className="menu-toggle"
+          variant="ghost"
+          size="icon"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X /> : <Menu />}
+        </Button>
+      </div>
+      {open && (
+        <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">
+          {nav.map(([to, name]) => (
+            <Link key={to} to={to}>
+              {name}
+            </Link>
+          ))}
+          <Link to="/join">
+            Join TechNexus <ArrowUpRight className="inline size-4" />
+          </Link>
+        </nav>
+      )}
+    </header>
+  );
+}
+export function Footer() {
+  return (
+    <footer className="site-footer">
+      <div className="container-wide">
+        <div className="footer-main">
+          <div className="footer-about">
+            <Brand />
+            <p>
+              A student-driven technical community at Chandigarh University. Learn together. Build
+              together. Go further.
+            </p>
+          </div>
+          <div className="footer-links">
+            <div>
+              <h3>Explore</h3>
+              <Link to="/about">About us</Link>
+              <Link to="/activities">Activities</Link>
+              <Link to="/events">Events</Link>
+              <Link to="/core-team">Core team</Link>
+            </div>
+            <div>
+              <h3>Get involved</h3>
+              <Link to="/join">Join TechNexus</Link>
+              <Link to="/volunteer">Volunteer</Link>
+              <Link to="/contact">Contact us</Link>
+              <Link to="/admin/login">Admin access</Link>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} TechNexus · Chandigarh University</span>
+          <span>Department of AIT-CSE · Innovate. Collaborate. Elevate.</span>
+        </div>
+      </div>
+    </footer>
+  );
+}

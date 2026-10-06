@@ -81,7 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TechNexus — Chandigarh University" },
-      { name: "description", content: "The AIT-CSE student technical community at Chandigarh University." },
+      {
+        name: "description",
+        content: "The AIT-CSE student technical community at Chandigarh University.",
+      },
       { property: "og:title", content: "TechNexus — Chandigarh University" },
       { property: "og:description", content: "Learn, build, and collaborate with TechNexus." },
       { property: "og:type", content: "website" },
@@ -93,7 +96,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
