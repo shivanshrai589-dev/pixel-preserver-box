@@ -89,8 +89,8 @@ export function Admin({ table }: { table?: Table }) {
         data: { table, ...editing, data: clean, status: editing.status as "Active" },
       });
       setEditing(null);
-      await refresh();
       setNotice("Saved successfully.");
+      await refresh();
     } catch (e) {
       setNotice(e instanceof Error ? e.message : "Unable to save");
     } finally {
@@ -103,8 +103,8 @@ export function Admin({ table }: { table?: Table }) {
     try {
       await deleteRecord({ data: { table, id } });
       setConfirmDelete(null);
-      await refresh();
       setNotice("Record deleted.");
+      await refresh();
     } catch (e) {
       setNotice(e instanceof Error ? e.message : "Unable to delete");
     } finally {
