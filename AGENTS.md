@@ -15,3 +15,4 @@
 - Store content entities as validated JSON records with indexed visibility status; shared editors keep CRUD consistent across club sections.
 - Keep official uploaded brand imagery immutable in asset pointers; browser icons are size-only derivatives of the same source.
 - Store club images in private storage and resolve signed viewing URLs for published content; workspace policy prohibits public buckets.
+- Grant and revoke administrator roles only through server functions that verify has_role before using the service-role client; user_roles stays read-own under RLS so no signed-in user can write roles directly.
