@@ -18,6 +18,7 @@ import {
   LoaderCircle,
   X,
   Upload,
+  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,7 +35,55 @@ const sections = [
   ["/admin/contact-messages", "Messages", Mail],
   ["/admin/content", "Content", FileText],
   ["/admin/settings", "Settings", Settings],
+  ["/admin/settings/admins", "Admin Management", ShieldCheck],
 ] as const;
+export function AdminSidebar() {
+  return (
+    <nav className="admin-sidebar" aria-label="Administrator navigation">
+      {sections.map(([to, name, Icon]) => (
+        <Link key={to} to={to} activeOptions={{ exact: true }}>
+          <Icon className="size-4" />
+          {name}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+export function AdminFrame({
+  title,
+  actions,
+  children,
+}: {
+  title: string;
+  actions?: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+  async function logout() {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    await navigate({ to: "/admin/login", replace: true });
+  }
+  return (
+    <div className="admin-shell">
+      <AdminSidebar />
+      <main className="admin-content">
+        <div className="admin-header">
+          <h1>{title}</h1>
+          <div className="flex gap-2">
+            {actions}
+            <Button variant="outline" size="icon" title="Sign out" aria-label="Sign out" onClick={logout}>
+              <LogOut />
+            </Button>
+          </div>
+        </div>
+        {children}
+      </main>
+    </div>
+  );
+}
 export function Admin({ table }: { table?: Table }) {
   const qc = useQueryClient();
   const navigate = useNavigate();
@@ -153,14 +202,7 @@ export function Admin({ table }: { table?: Table }) {
   }
   return (
     <div className="admin-shell">
-      <nav className="admin-sidebar" aria-label="Administrator navigation">
-        {sections.map(([to, name, Icon]) => (
-          <Link key={to} to={to} activeOptions={{ exact: true }}>
-            <Icon className="size-4" />
-            {name}
-          </Link>
-        ))}
-      </nav>
+      <AdminSidebar />
       <main className="admin-content">
         <div className="admin-header">
           <h1>

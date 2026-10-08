@@ -5,7 +5,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { routeTree } from '@/routeTree.gen';
 
 describe('TechNexus routing and validation', () => {
-  it.each(['/about','/activities','/members','/core-team','/events','/events/test','/join','/volunteer','/contact','/admin/login','/reset-password','/admin','/admin/events','/admin/members','/admin/settings'])('matches %s', path => {
+  it.each(['/about','/activities','/members','/core-team','/events','/events/test','/join','/volunteer','/contact','/admin/login','/reset-password','/admin','/admin/events','/admin/members','/admin/settings','/admin/settings/admins'])('matches %s', path => {
     const router = createRouter({ routeTree, context: {queryClient: new QueryClient()} });
     expect(router.matchRoutes(path).at(-1)?.routeId).not.toBe(rootRouteId);
   });
