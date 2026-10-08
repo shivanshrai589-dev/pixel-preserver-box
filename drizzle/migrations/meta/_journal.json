@@ -22,6 +22,13 @@
       "when": 1791262542431,
       "tag": "0002_limit_images_to_published_content",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791483965231,
+      "tag": "0003_migration",
+      "breakpoints": true
     }
   ]
 }
