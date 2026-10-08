@@ -37,7 +37,8 @@ import { Route as AuthenticatedAdminMembersRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin.messages'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminVolunteersRouteImport } from './routes/_authenticated/admin.volunteers'
-import { Route as SrcRoutesEventsIndexRouteImport } from './routes/src/routes/events.index'
+import { Route as AuthenticatedAdminSettingsIndexRouteImport } from './routes/_authenticated/admin.settings.index'
+import { Route as AuthenticatedAdminSettingsAdminsRouteImport } from './routes/_authenticated/admin.settings.admins'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -189,11 +190,18 @@ const AuthenticatedAdminVolunteersRoute =
     path: '/admin/volunteers',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const SrcRoutesEventsIndexRoute = SrcRoutesEventsIndexRouteImport.update({
-  id: '/src/routes/events/',
-  path: '/src/routes/events/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const AuthenticatedAdminSettingsIndexRoute =
+  AuthenticatedAdminSettingsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedAdminSettingsRoute,
+  } as any)
+const AuthenticatedAdminSettingsAdminsRoute =
+  AuthenticatedAdminSettingsAdminsRouteImport.update({
+    id: '/admins',
+    path: '/admins',
+    getParentRoute: () => AuthenticatedAdminSettingsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -220,10 +228,11 @@ export interface FileRoutesByFullPath {
   '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/admin/members': typeof AuthenticatedAdminMembersRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRouteWithChildren
   '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
-  '/src/routes/events/': typeof SrcRoutesEventsIndexRoute
+  '/admin/settings/admins': typeof AuthenticatedAdminSettingsAdminsRoute
+  '/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -249,10 +258,10 @@ export interface FileRoutesByTo {
   '/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/admin/members': typeof AuthenticatedAdminMembersRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
-  '/src/routes/events': typeof SrcRoutesEventsIndexRoute
+  '/admin/settings/admins': typeof AuthenticatedAdminSettingsAdminsRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -281,10 +290,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/join-applications': typeof AuthenticatedAdminJoinApplicationsRoute
   '/_authenticated/admin/members': typeof AuthenticatedAdminMembersRoute
   '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRouteWithChildren
   '/_authenticated/admin/volunteers': typeof AuthenticatedAdminVolunteersRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
-  '/src/routes/events/': typeof SrcRoutesEventsIndexRoute
+  '/_authenticated/admin/settings/admins': typeof AuthenticatedAdminSettingsAdminsRoute
+  '/_authenticated/admin/settings/': typeof AuthenticatedAdminSettingsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -316,7 +326,8 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/admin/volunteers'
     | '/admin/'
-    | '/src/routes/events/'
+    | '/admin/settings/admins'
+    | '/admin/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -342,10 +353,10 @@ export interface FileRouteTypes {
     | '/admin/join-applications'
     | '/admin/members'
     | '/admin/messages'
-    | '/admin/settings'
     | '/admin/volunteers'
     | '/admin'
-    | '/src/routes/events'
+    | '/admin/settings/admins'
+    | '/admin/settings'
   id:
     | '__root__'
     | '/'
@@ -376,7 +387,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/volunteers'
     | '/_authenticated/admin/'
-    | '/src/routes/events/'
+    | '/_authenticated/admin/settings/admins'
+    | '/_authenticated/admin/settings/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -394,7 +406,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   VolunteerRoute: typeof VolunteerRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  SrcRoutesEventsIndexRoute: typeof SrcRoutesEventsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -595,15 +606,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminVolunteersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/src/routes/events/': {
-      id: '/src/routes/events/'
-      path: '/src/routes/events'
-      fullPath: '/src/routes/events/'
-      preLoaderRoute: typeof SrcRoutesEventsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/admin/settings/': {
+      id: '/_authenticated/admin/settings/'
+      path: '/'
+      fullPath: '/admin/settings/'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminSettingsRoute
+    }
+    '/_authenticated/admin/settings/admins': {
+      id: '/_authenticated/admin/settings/admins'
+      path: '/admins'
+      fullPath: '/admin/settings/admins'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsAdminsRouteImport
+      parentRoute: typeof AuthenticatedAdminSettingsRoute
     }
   }
 }
+
+interface AuthenticatedAdminSettingsRouteChildren {
+  AuthenticatedAdminSettingsAdminsRoute: typeof AuthenticatedAdminSettingsAdminsRoute
+  AuthenticatedAdminSettingsIndexRoute: typeof AuthenticatedAdminSettingsIndexRoute
+}
+
+const AuthenticatedAdminSettingsRouteChildren: AuthenticatedAdminSettingsRouteChildren =
+  {
+    AuthenticatedAdminSettingsAdminsRoute:
+      AuthenticatedAdminSettingsAdminsRoute,
+    AuthenticatedAdminSettingsIndexRoute: AuthenticatedAdminSettingsIndexRoute,
+  }
+
+const AuthenticatedAdminSettingsRouteWithChildren =
+  AuthenticatedAdminSettingsRoute._addFileChildren(
+    AuthenticatedAdminSettingsRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminActivitiesRoute: typeof AuthenticatedAdminActivitiesRoute
@@ -615,7 +650,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminJoinApplicationsRoute: typeof AuthenticatedAdminJoinApplicationsRoute
   AuthenticatedAdminMembersRoute: typeof AuthenticatedAdminMembersRoute
   AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
-  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRouteWithChildren
   AuthenticatedAdminVolunteersRoute: typeof AuthenticatedAdminVolunteersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
@@ -632,7 +667,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAdminJoinApplicationsRoute,
   AuthenticatedAdminMembersRoute: AuthenticatedAdminMembersRoute,
   AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
-  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRouteWithChildren,
   AuthenticatedAdminVolunteersRoute: AuthenticatedAdminVolunteersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
@@ -668,7 +703,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   VolunteerRoute: VolunteerRoute,
   AdminLoginRoute: AdminLoginRoute,
-  SrcRoutesEventsIndexRoute: SrcRoutesEventsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
