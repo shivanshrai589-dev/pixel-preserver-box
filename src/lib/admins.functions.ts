@@ -2,8 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-type Ctx = { supabase: { rpc: (...a: never[]) => unknown }; userId: string };
-
 async function assertAdmin(context: { supabase: unknown; userId: string }) {
   const sb = context.supabase as {
     rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown }>;
@@ -97,5 +95,3 @@ export const removeAdmin = createServerFn({ method: "POST" })
     if (error) throw new Error("Unable to remove administrator access");
     return { ok: true };
   });
-
-export type { Ctx };
